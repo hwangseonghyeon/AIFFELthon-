@@ -24,7 +24,7 @@ https://blog.kakaocdn.net/dn/bAmtqx/btq4f0vR6mp/lzThOlW2XQtMoHq5urHri1/img.jpg
 Semantic segmentation이란 Object segmentation을 하되 같은 class인 object들은 같은 영역 혹은 색으로 분할해주고,  
 반대로 Instance segmentation은 같은 class이여도 서로 다른 instance로 구분해줍니다  
 
-따라서 object가 겹쳤을때 각각의 object를 구분해주지 못하는 Semantic segmentation  
+따라서 object가 겹쳤을때 각각의 object를 구분해주지 못하면 Semantic segmentation  
 구분할 수 있다면 Instance segmentation이라 할 수 있습니다
 
 주어진 데이터를 확인해본 결과, mask value가 모두 동일해 semantic segmentation이 적절하다 판단했습니다
@@ -36,6 +36,8 @@ Semantic segmentation이란 Object segmentation을 하되 같은 class인 object
 왜냐하면 파손 class 중 C는 마스크 영역이 굉장히 작았고, 사람이 봐도 패턴을 알 수 없을 정도로 규칙성이 없었습니다  
 심지어 데이터가 그리 많지 않아 딥러닝으로 좋은 결과를 얻기 어려울거라 예상되어  
 resnet과 atrous pooling으로 최대한 깊고 섬세한 feature를 뽑아내고자 했습니다
+
+또 deeplabv3는 구현하기 쉽다는 장점 또한 있습니다
 
 ## 3. data preprocessing
 
@@ -51,3 +53,13 @@ C 이미지에서 A, B를 예측해 mask를 그리도록 했습니다
 
 ## 4. 결과
 
+A, B overlap mask만 학습했을 때는 만족할 만한 결과가 나오지만,  
+A, B, C overlap mask를 학습시키면 성능이 크게 하락합니다  
+기존에 감지할 수 있던 class 마저도 감지를 못 하게 됩니다  
+
+저는 이 원인을 C의 불규칙성 때문이라 생각해서 deep k-means cluster를 이용해  
+data에 규칙성을 부여한 다음, 실험을 해보고자 합니다
+
++ AIFFELthon에서 같은 주제로 프로젝트를 진행한 다른 조의 경우, loss 값을 조절해서 이를 해결했다고 합니다  
++ 때문에 저도 시도해보고자 했지만, 이를 위해서는 pytorch로 구현할 필요가 있다 판단되어 현재 시도해보진 못 하고 있습니다
++ 이는 빠른 시일 내에 실험해보고자 합니다
