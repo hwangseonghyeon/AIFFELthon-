@@ -56,6 +56,6 @@ A, B, C overlap mask를 학습시키면 성능이 크게 하락합니다
 마스크가 점점 작아지는 특징이 있었습니다  
 저는 마스크가 작아지는게 C class mask를 소실시켜버리는 원인이라 생각해  
 C class mask 외곽선을 중심으로 마스크의 크기를 늘렸습니다  
-또 보다 섬세한 에측을 위해 Unet 구조를 모방해 decoder에 resnet50의 초반 activation layer를 연결해줬습니다
+또 보다 섬세한 측을 위해 Unet 구조를 모방해 decoder에 resnet50의 초반 activation layer를 연결해줬습니다
 
 그 결과 만족할만한 결가가 나와 프로젝트를 끝내게 되었습니다
